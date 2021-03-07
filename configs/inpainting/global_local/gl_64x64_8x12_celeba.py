@@ -45,7 +45,7 @@ train_cfg = dict(
 test_cfg = dict(metrics=['l1', 'psnr', 'ssim'])
 
 dataset_type = 'ImgInpaintingDataset'
-input_shape = (256, 256)
+input_shape = (64, 64)
 
 train_pipeline = [
     dict(type='LoadImageFromFile', key='gt_img'),
@@ -147,5 +147,5 @@ work_dir = None
 load_from = None
 resume_from = None
 workflow = [('train', 10000)]
-exp_name = 'gl_celeba_256'
+exp_name = 'gl_celeba_64'
 find_unused_parameters = False
