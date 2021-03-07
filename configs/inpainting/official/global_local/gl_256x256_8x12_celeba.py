@@ -123,7 +123,7 @@ log_config = dict(
     hooks=[
         dict(type='IterTextLoggerHook'),
         # dict(type='TensorboardLoggerHook'),
-        # dict(type='PaviLoggerHook', init_kwargs=dict(project='mmedit'))
+        dict(type='PaviLoggerHook', init_kwargs=dict(project='mmedit'))
     ])
 
 visual_config = dict(
@@ -143,9 +143,9 @@ evaluation = dict(
 total_iters = 300002
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = None
+work_dir = './work_dirs/gl_celeba'
 load_from = None
 resume_from = None
 workflow = [('train', 10000)]
-exp_name = 'gl_celeba_256'
+exp_name = '0027_gl_celeba'
 find_unused_parameters = False

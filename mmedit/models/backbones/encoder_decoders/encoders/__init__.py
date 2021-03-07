@@ -5,9 +5,10 @@ from .indexnet_encoder import (DepthwiseIndexBlock, HolisticIndexBlock,
 from .pconv_encoder import PConvEncoder
 from .resnet_enc import ResGCAEncoder, ResNetEnc, ResShortcutEnc
 from .vgg import VGG16
+from .naive_encoder import NaiveEncoder
 
 __all__ = [
     'GLEncoder', 'VGG16', 'ResNetEnc', 'HolisticIndexBlock',
     'DepthwiseIndexBlock', 'ResShortcutEnc', 'PConvEncoder', 'DeepFillEncoder',
-    'IndexNetEncoder', 'ResGCAEncoder'
+    'IndexNetEncoder', 'ResGCAEncoder', 'NaiveEncoder'
 ]

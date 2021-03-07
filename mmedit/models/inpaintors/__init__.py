@@ -3,8 +3,9 @@ from .gl_inpaintor import GLInpaintor
 from .one_stage import OneStageInpaintor
 from .pconv_inpaintor import PConvInpaintor
 from .two_stage import TwoStageInpaintor
+from .maskfree import MaskFreeInpaintor
 
 __all__ = [
     'OneStageInpaintor', 'GLInpaintor', 'PConvInpaintor', 'TwoStageInpaintor',
-    'DeepFillv1Inpaintor'
+    'DeepFillv1Inpaintor', 'MaskFreeInpaintor'
 ]

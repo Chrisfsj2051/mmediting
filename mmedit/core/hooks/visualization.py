@@ -70,6 +70,9 @@ class VisualizationHook(Hook):
         filename = self.filename_tmpl.format(runner.iter + 1)
 
         img_list = [x for k, x in results.items() if k in self.res_name_list]
+        for _ in range(len(img_list)):
+            if img_list[_].shape[1] == 1:
+                img_list[_] = torch.cat([img_list[_]] * 3, 1)
         img_cat = torch.cat(img_list, dim=3).detach()
         if self.rerange:
             img_cat = ((img_cat + 1) / 2)

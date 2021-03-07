@@ -38,11 +38,11 @@ model = dict(
 
 train_cfg = dict(
     disc_step=1,
-    iter_tc=40000,
-    iter_td=50000,
-    start_iter=0,
+    iter_tc=90000,
+    iter_td=100000,
+    start_iter=350000,
     local_size=(128, 128))
-test_cfg = dict(metrics=['l1', 'psnr', 'ssim'])
+test_cfg = dict(metrics=['l1'])
 
 dataset_type = 'ImgInpaintingDataset'
 input_shape = (256, 256)
@@ -86,7 +86,7 @@ train_pipeline = [
 
 test_pipeline = train_pipeline
 
-data_root = './data/CelebA-HQ/'
+data_root = './data/places365/'
 
 data = dict(
     workers_per_gpu=4,
@@ -95,19 +95,13 @@ data = dict(
     test_dataloader=dict(samples_per_gpu=1),
     train=dict(
         type=dataset_type,
-        ann_file=(data_root + 'train_celeba_img_list.txt'),
+        ann_file=data_root + 'train_places_img_list_total.txt',
         data_prefix=data_root,
         pipeline=train_pipeline,
         test_mode=False),
     val=dict(
         type=dataset_type,
-        ann_file=(data_root + 'val_celeba_img_list.txt'),
-        data_prefix=data_root,
-        pipeline=test_pipeline,
-        test_mode=True),
-    test=dict(
-        type=dataset_type,
-        ann_file=(data_root + 'val_celeba_img_list.txt'),
+        ann_file=data_root + 'val_places_img_list.txt',
         data_prefix=data_root,
         pipeline=test_pipeline,
         test_mode=True))
@@ -121,8 +115,8 @@ checkpoint_config = dict(by_epoch=False, interval=50000)
 log_config = dict(
     interval=100,
     hooks=[
-        dict(type='IterTextLoggerHook'),
-        # dict(type='TensorboardLoggerHook'),
+        dict(type='TextLoggerHook', by_epoch=False),
+        dict(type='TensorboardLoggerHook'),
         # dict(type='PaviLoggerHook', init_kwargs=dict(project='mmedit'))
     ])
 
@@ -135,17 +129,14 @@ visual_config = dict(
     ],
 )
 
-evaluation = dict(
-    interval=50000,
-    metric_dict=dict(l1=dict()),
-)
+evaluation = dict(interval=50000)
 
-total_iters = 300002
+total_iters = 500002
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = None
 load_from = None
 resume_from = None
 workflow = [('train', 10000)]
-exp_name = 'gl_celeba_256'
+exp_name = 'gl_places'
 find_unused_parameters = False
