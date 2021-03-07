@@ -14,8 +14,8 @@ for i, file_name in enumerate(os.listdir(config_path)):
         parti = 'mediaf'
     else:
         parti = 'mediaf1'
-    # parti = 'mediaa'
-    parti = 'mediaf1'
+    parti = 'mediaa'
+    # parti = 'mediaf1'
     # parti = 'MediaA'
     # parti = 'pat_mars1'
     print('nohup bash tools/fast_slurm_train.sh '

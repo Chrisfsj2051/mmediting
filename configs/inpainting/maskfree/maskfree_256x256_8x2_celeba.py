@@ -1,15 +1,17 @@
+norm_cfg=dict(type='SyncBN', requires_grad=False)
+
 model = dict(
     type='MaskFreeInpaintor',
     encdec=dict(
         type='SimpleEncoderDecoder',
         encoder=dict(
             type='NaiveEncoder',
-            norm_cfg=dict(type='BN', requires_grad=False),
+            norm_cfg=norm_cfg,
             norm_eval=True),
         decoder=dict(
             type='NaiveDecoder',
             out_channels=3,
-            norm_cfg=dict(type='BN'))),
+            norm_cfg=norm_cfg)),
     disc=dict(
         type='MaskFreeDiscriminator',
         img_disc_cfg=dict(
@@ -19,18 +21,17 @@ model = dict(
             fc_in_channels=512 * 4 * 4,
             fc_out_channels=1024,
             num_convs=6,
-            norm_cfg=dict(type='BN')),
+            norm_cfg=norm_cfg),
         mask_disc_cfg=dict(
             type='MaskDiscriminator',
             encoder=dict(
                 type='NaiveEncoder',
-                norm_cfg=dict(type='BN', requires_grad=False),
+                norm_cfg=norm_cfg,
                 norm_eval=True),
             decoder=dict(
                 type='NaiveDecoder',
                 out_channels=1,
-
-                norm_cfg=dict(type='BN'))),
+                norm_cfg=norm_cfg)),
     ),
     loss_gan=dict(
         type='GANLoss',
@@ -121,7 +122,7 @@ data = dict(
     test_dataloader=dict(samples_per_gpu=2),
     train=dict(
         type=dataset_type,
-        ann_file=(data_root + '3k_val_list.txt'),
+        ann_file=(data_root + '27k_train_list.txt'),
         data_prefix=data_root + 'celeba-1024',
         pipeline=train_pipeline,
         test_mode=False),
@@ -139,7 +140,7 @@ data = dict(
         test_mode=True))
 
 optimizers = dict(generator=dict(type='Adam', lr=0.0004),
-                  disc=dict(type='Adam', lr=0.00004))  # second stage training
+                  disc=dict(type='Adam', lr=0.0004))  # second stage training
 
 lr_config = dict(policy='Fixed', by_epoch=False)
 
@@ -147,7 +148,7 @@ checkpoint_config = dict(by_epoch=False, interval=50000)
 log_config = dict(
     interval=100,
     hooks=[
-        dict(type='TextLoggerHook', ),
+        dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook'),
         # dict(type='PaviLoggerHook', init_kwargs=dict(project='mmedit'))
     ])
@@ -161,7 +162,7 @@ visual_config = dict(
 )
 
 evaluation = dict(
-    interval=50000,
+    interval=10000,
     metric_dict=dict(l1=dict()),
 )
 
