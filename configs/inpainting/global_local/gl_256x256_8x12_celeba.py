@@ -95,7 +95,7 @@ data = dict(
     test_dataloader=dict(samples_per_gpu=1),
     train=dict(
         type=dataset_type,
-        ann_file=(data_root + '27k_train_list.tx'),
+        ann_file=(data_root + '27k_train_list.txt'),
         data_prefix=data_root + 'celeba-1024',
         pipeline=train_pipeline,
         test_mode=False),
@@ -121,7 +121,7 @@ checkpoint_config = dict(by_epoch=False, interval=50000)
 log_config = dict(
     interval=100,
     hooks=[
-        dict(type='IterTextLoggerHook'),
+        dict(type='TextLoggerHook'),
         # dict(type='TensorboardLoggerHook'),
         # dict(type='PaviLoggerHook', init_kwargs=dict(project='mmedit'))
     ])

@@ -1,15 +1,6 @@
 import os
 
-import mmcv
-import numpy as np
-import sklearn.mixture as skm
-import torch
-from ai_hub import inferServer
-
 folder_name = 'inpainting/global_local/'
-
-gpu_num = (8
-           if 'gun' not in folder_name and 'trion' not in folder_name else 32)
 config_path = f'configs/{folder_name}/'
 
 for i, file_name in enumerate(os.listdir(config_path)):
