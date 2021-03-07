@@ -112,29 +112,29 @@ train_pipeline = [
 
 test_pipeline = train_pipeline
 
-data_root = '/media/nirvana/2.0TB-Disk/dataset/CelebA-HQ/'
+data_root = 'data/CelebA-HQ/'
 
 data = dict(
-    workers_per_gpu=0,
-    train_dataloader=dict(samples_per_gpu=1, drop_last=True),
-    val_dataloader=dict(samples_per_gpu=1),
-    test_dataloader=dict(samples_per_gpu=1),
+    workers_per_gpu=2,
+    train_dataloader=dict(samples_per_gpu=2, drop_last=True),
+    val_dataloader=dict(samples_per_gpu=2),
+    test_dataloader=dict(samples_per_gpu=2),
     train=dict(
         type=dataset_type,
         ann_file=(data_root + '3k_val_list.txt'),
-        data_prefix=data_root + 'celeba-512',
+        data_prefix=data_root + 'celeba-1024',
         pipeline=train_pipeline,
         test_mode=False),
     val=dict(
         type=dataset_type,
         ann_file=(data_root + '3k_val_list.txt'),
-        data_prefix=data_root + 'celeba-512',
+        data_prefix=data_root + 'celeba-1024',
         pipeline=test_pipeline,
         test_mode=True),
     test=dict(
         type=dataset_type,
         ann_file=(data_root + '3k_val_list.txt'),
-        data_prefix=data_root + 'celeba-512',
+        data_prefix=data_root + 'celeba-1024',
         pipeline=test_pipeline,
         test_mode=True))
 
@@ -168,9 +168,9 @@ evaluation = dict(
 total_iters = 300002
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-work_dir = './work_dirs/maskfree/test'
+work_dir = None
 load_from = None
 resume_from = None
 workflow = [('train', 10000)]
-exp_name = 'pconv_256x256_stage2_4x2_celeba'
+exp_name = 'maskfree_256x256_8x2_celeba'
 find_unused_parameters = False

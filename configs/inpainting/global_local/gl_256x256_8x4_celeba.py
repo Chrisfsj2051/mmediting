@@ -90,7 +90,7 @@ data_root = './data/CelebA-HQ/'
 
 data = dict(
     workers_per_gpu=4,
-    train_dataloader=dict(samples_per_gpu=12, drop_last=True),
+    train_dataloader=dict(samples_per_gpu=4, drop_last=True),
     val_dataloader=dict(samples_per_gpu=1),
     test_dataloader=dict(samples_per_gpu=1),
     train=dict(

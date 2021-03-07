@@ -160,12 +160,12 @@ class MaskFreeInpaintor(OneStageInpaintor):
 
         fake_res = self.generator(masked_img)
         fake_img = gt_img * (1. - mask) + fake_res * mask
+        # fake_img = fake_res
 
         # discriminator training step
         if self.train_cfg.disc_step > 0:
             set_requires_grad(self.disc, True)
-            train_d_data = dict(img=fake_img.detach(),
-                                mask=mask)
+            train_d_data = dict(img=fake_img.detach(), mask=mask)
             disc_losses = self.forward_train_d(
                 train_d_data, False, is_disc=True)
             loss_disc, log_vars_d = self.parse_losses(disc_losses)
@@ -223,3 +223,72 @@ class MaskFreeInpaintor(OneStageInpaintor):
             results=results)
 
         return outputs
+
+    def forward_test(self,
+                     masked_img,
+                     mask,
+                     save_image=False,
+                     save_path=None,
+                     iteration=None,
+                     **kwargs):
+        """Forward function for testing.
+
+        Args:
+            masked_img (torch.Tensor): Tensor with shape of (n, 3, h, w).
+            mask (torch.Tensor): Tensor with shape of (n, 1, h, w).
+            save_image (bool, optional): If True, results will be saved as
+                image. Defaults to False.
+            save_path (str, optional): If given a valid str, the reuslts will
+                be saved in this path. Defaults to None.
+            iteration (int, optional): Iteration number. Defaults to None.
+
+        Returns:
+            dict: Contain output results and eval metrics (if have).
+        """
+        input_x = masked_img
+        fake_res = self.generator(input_x)
+        fake_img = fake_res * mask + masked_img * (1. - mask)
+
+        output = dict()
+        eval_results = {}
+        if self.eval_with_metrics:
+            gt_img = kwargs['gt_img']
+            data_dict = dict(gt_img=gt_img, fake_res=fake_res, mask=mask)
+            for metric_name in self.test_cfg['metrics']:
+                if metric_name in ['ssim', 'psnr']:
+                    eval_results[metric_name] = self._eval_metrics[
+                        metric_name](tensor2img(fake_img, min_max=(-1, 1)),
+                                     tensor2img(gt_img, min_max=(-1, 1)))
+                else:
+                    eval_results[metric_name] = self._eval_metrics[
+                        metric_name]()(data_dict).item()
+            output['eval_results'] = eval_results
+        else:
+            output['fake_res'] = fake_res
+            output['fake_img'] = fake_img
+
+        output['meta'] = None if 'meta' not in kwargs else kwargs['meta'][0]
+
+        if save_image:
+            assert save_image and save_path is not None, (
+                'Save path should been given')
+            assert output['meta'] is not None, (
+                'Meta information should be given to save image.')
+
+            tmp_filename = output['meta']['gt_img_path']
+            filestem = Path(tmp_filename).stem
+            if iteration is not None:
+                filename = f'{filestem}_{iteration}.png'
+            else:
+                filename = f'{filestem}.png'
+            mmcv.mkdir_or_exist(save_path)
+            img_list = [kwargs['gt_img']] if 'gt_img' in kwargs else []
+            img_list.extend(
+                [masked_img,
+                 mask.expand_as(masked_img), fake_res, fake_img])
+            img = torch.cat(img_list, dim=3).cpu()
+            self.save_visualization(img, osp.join(save_path, filename))
+            output['save_img_path'] = osp.abspath(
+                osp.join(save_path, filename))
+
+        return output
