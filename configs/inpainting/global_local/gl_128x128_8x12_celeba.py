@@ -140,7 +140,7 @@ evaluation = dict(
     metric_dict=dict(l1=dict()),
 )
 
-total_iters = 300002
+total_iters = 100002
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = None
