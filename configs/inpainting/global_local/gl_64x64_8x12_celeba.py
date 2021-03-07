@@ -41,7 +41,7 @@ train_cfg = dict(
     iter_tc=40000,
     iter_td=50000,
     start_iter=0,
-    local_size=(128, 128))
+    local_size=(32, 32))
 test_cfg = dict(metrics=['l1', 'psnr', 'ssim'])
 
 dataset_type = 'ImgInpaintingDataset'

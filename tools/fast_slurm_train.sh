@@ -10,7 +10,7 @@ PARTITION=${3:-mediaf} #$1
 JOB_NAME=${4:-python} #$4
 GPUS=${5:-8}
 CPUS=5
-SCR_NAME=./tools/slurm_train.sh
+SCR_NAME="bash tools/slurm_train.sh"
 
 
 if [ ${PARTITION} = mediaf ]; then

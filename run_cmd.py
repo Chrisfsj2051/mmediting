@@ -15,10 +15,10 @@ for i, file_name in enumerate(os.listdir(config_path)):
     else:
         parti = 'mediaf1'
     # parti = 'mediaa'
-    parti = 'mediaf'
+    parti = 'mediaf1'
     # parti = 'MediaA'
     # parti = 'pat_mars1'
     print('nohup bash tools/fast_slurm_train.sh '
           '%s %s %s %s %d > log/%s/%s &' %
-          (folder_name, file_name, parti, file_name, gpu_num, folder_name,
+          (folder_name, file_name, parti, 'python', gpu_num, folder_name,
            outfile_name))
