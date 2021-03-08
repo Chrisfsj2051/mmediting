@@ -47,10 +47,10 @@ class MaskFreeInpaintor(OneStageInpaintor):
         loss_ = self.loss_gan(pred_img, is_real, is_disc)
 
         loss = dict(real_loss=loss_) if is_real else dict(fake_loss=loss_)
-        loss['mask_loss'] = self.loss_gan_mask(
-            pred_mask, data_batch['mask'], is_disc=True)
-        if is_real:
-            loss['mask_loss'] *= 0.0
+        mask_loss_name = 'mask_loss_real' if is_real else 'mask_loss_fake'
+        loss[mask_loss_name] = self.loss_gan_mask(
+            pred_mask, data_batch['mask'], is_disc=True) * (
+                                   0.0 if is_real else 1.0)
 
         if self.with_disc_shift_loss:
             loss_d_shift = self.loss_disc_shift(loss_)
