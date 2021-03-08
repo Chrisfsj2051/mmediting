@@ -174,4 +174,4 @@ load_from = None
 resume_from = None
 workflow = [('train', 10000)]
 exp_name = 'maskfree_256x256_8x2_celeba'
-find_unused_parameters = True
+find_unused_parameters = False

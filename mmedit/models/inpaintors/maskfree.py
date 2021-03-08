@@ -43,13 +43,14 @@ class MaskFreeInpaintor(OneStageInpaintor):
         Returns:
             dict: Contains the loss items computed in this function.
         """
-        pred = self.disc(data_batch['img'])
-        loss_ = self.loss_gan(pred[0], is_real, is_disc)
+        pred_img, pred_mask = self.disc(data_batch['img'])
+        loss_ = self.loss_gan(pred_img, is_real, is_disc)
 
         loss = dict(real_loss=loss_) if is_real else dict(fake_loss=loss_)
-        if not is_real:
-            loss['mask_loss'] = self.loss_gan_mask(
-                pred[1], data_batch['mask'], is_disc=True)
+        loss['mask_loss'] = self.loss_gan_mask(
+            pred_mask, data_batch['mask'], is_disc=True)
+        if is_real:
+            loss['mask_loss'] *= 0.0
 
         if self.with_disc_shift_loss:
             loss_d_shift = self.loss_disc_shift(loss_)
@@ -174,7 +175,7 @@ class MaskFreeInpaintor(OneStageInpaintor):
             loss_disc.backward()
 
             disc_losses = self.forward_train_d(
-                dict(img=gt_img), True, is_disc=True)
+                dict(img=gt_img, mask=mask), True, is_disc=True)
             loss_disc, log_vars_d = self.parse_losses(disc_losses)
             log_vars.update(log_vars_d)
             loss_disc.backward()
