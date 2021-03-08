@@ -38,8 +38,8 @@ model = dict(
 
 train_cfg = dict(
     disc_step=1,
-    iter_tc=40000,
-    iter_td=50000,
+    iter_tc=40000//3,
+    iter_td=50000//3,
     start_iter=0,
     local_size=(128, 128))
 test_cfg = dict(metrics=['l1', 'psnr', 'ssim'])
@@ -136,7 +136,7 @@ visual_config = dict(
 )
 
 evaluation = dict(
-    interval=50000,
+    interval=10000,
     metric_dict=dict(l1=dict()),
 )
 

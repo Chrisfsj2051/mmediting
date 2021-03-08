@@ -11,7 +11,7 @@ model = dict(
         global_disc_cfg=dict(
             in_channels=3,
             max_channels=512,
-            fc_in_channels=512 * 4 * 4,
+            fc_in_channels=512 * 4,
             fc_out_channels=1024,
             num_convs=6,
             norm_cfg=dict(type='SyncBN'),
@@ -19,7 +19,7 @@ model = dict(
         local_disc_cfg=dict(
             in_channels=3,
             max_channels=512,
-            fc_in_channels=512 * 4 * 4,
+            fc_in_channels=512 * 4,
             fc_out_channels=1024,
             num_convs=5,
             norm_cfg=dict(type='SyncBN'),
@@ -38,8 +38,8 @@ model = dict(
 
 train_cfg = dict(
     disc_step=1,
-    iter_tc=40000,
-    iter_td=50000,
+    iter_tc=40000//3,
+    iter_td=50000//3,
     start_iter=0,
     local_size=(64, 64))
 test_cfg = dict(metrics=['l1', 'psnr', 'ssim'])
@@ -136,7 +136,7 @@ visual_config = dict(
 )
 
 evaluation = dict(
-    interval=50000,
+    interval=10000,
     metric_dict=dict(l1=dict()),
 )
 

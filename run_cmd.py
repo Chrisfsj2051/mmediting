@@ -1,6 +1,7 @@
 import os
 
-folder_name = 'inpainting/global_local/'
+# folder_name = 'inpainting/global_local/'
+folder_name = 'inpainting/maskfree/'
 config_path = f'configs/{folder_name}/'
 
 for i, file_name in enumerate(os.listdir(config_path)):
