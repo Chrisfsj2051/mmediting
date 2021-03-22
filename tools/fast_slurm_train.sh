@@ -5,7 +5,7 @@ set -x
 FOLDER_NAME=$1
 CONFIG_NAME=$2
 CONFIG=configs/${FOLDER_NAME}/${CONFIG_NAME}
-work_dir=./mmdet_output/${FOLDER_NAME}/${CONFIG_NAME}
+work_dir=./mmedit_output/${FOLDER_NAME}/${CONFIG_NAME}
 PARTITION=${3:-mediaf} #$1
 JOB_NAME=${4:-python} #$4
 GPUS=${5:-8}
