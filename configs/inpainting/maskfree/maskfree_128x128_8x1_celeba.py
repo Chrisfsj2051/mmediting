@@ -81,16 +81,10 @@ train_pipeline = [
         mask_config=dict(
             num_vertexes=(4, 10),
             max_angle=6.0,
-            length_range=(20, 128),
-            brush_width=(10, 45),
+            length_range=(10, 64),
+            brush_width=(6, 22),
             area_ratio_range=(0.15, 0.65),
             img_shape=input_shape)),
-    dict(
-        type='Crop',
-        keys=['gt_img'],
-        crop_size=(384, 384),
-        random_crop=True,
-    ),
     dict(
         type='Resize',
         keys=['gt_img'],
@@ -111,7 +105,39 @@ train_pipeline = [
     dict(type='ImageToTensor', keys=['gt_img', 'masked_img', 'mask'])
 ]
 
-test_pipeline = train_pipeline
+test_pipeline = [
+    dict(type='LoadImageFromFile', key='gt_img'),
+    dict(
+        type='LoadMask',
+        mask_mode='irregular',
+        mask_config=dict(
+            num_vertexes=(4, 10),
+            max_angle=6.0,
+            length_range=(5, 10),
+            brush_width=(6, 14),
+            area_ratio_range=(0.15, 0.65),
+            img_shape=input_shape)),
+    dict(
+        type='Resize',
+        keys=['gt_img'],
+        scale=input_shape,
+        keep_ratio=False,
+    ),
+    dict(
+        type='Normalize',
+        keys=['gt_img'],
+        mean=[127.5] * 3,
+        std=[127.5] * 3,
+        to_rgb=False),
+    dict(type='GetMaskedImage'),
+    dict(
+        type='Collect',
+        keys=['gt_img', 'masked_img', 'mask'],
+        meta_keys=['gt_img_path']),
+    dict(type='ImageToTensor', keys=['gt_img', 'masked_img', 'mask'])
+]
+
+# test_pipeline = train_pipeline
 
 data_root = 'data/CelebA-HQ/'
 
@@ -119,7 +145,7 @@ data = dict(
     workers_per_gpu=2,
     train_dataloader=dict(samples_per_gpu=1, drop_last=True),
     val_dataloader=dict(samples_per_gpu=2),
-    test_dataloader=dict(samples_per_gpu=2),
+    test_dataloader=dict(),
     train=dict(
         type=dataset_type,
         ann_file=(data_root + '27k_train_list.txt'),

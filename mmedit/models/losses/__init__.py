@@ -5,12 +5,12 @@ from .gradient_loss import GradientLoss
 from .perceptual_loss import PerceptualLoss, PerceptualVGG
 from .pixelwise_loss import CharbonnierLoss, L1Loss, MaskedTVLoss, MSELoss
 from .utils import mask_reduce_loss, reduce_loss
-from .maskfree_loss import MaskL1Loss
+from .maskfree_loss import MaskL1Loss, SoftL1Loss
 
 __all__ = [
     'L1Loss', 'MSELoss', 'CharbonnierLoss', 'L1CompositionLoss',
     'MSECompositionLoss', 'CharbonnierCompLoss', 'GANLoss',
     'GradientPenaltyLoss', 'PerceptualLoss', 'PerceptualVGG', 'reduce_loss',
     'mask_reduce_loss', 'DiscShiftLoss', 'MaskedTVLoss', 'GradientLoss',
-    'MaskL1Loss'
+    'MaskL1Loss', 'SoftL1Loss'
 ]

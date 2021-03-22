@@ -249,6 +249,7 @@ class MaskFreeInpaintor(OneStageInpaintor):
         input_x = masked_img
         fake_res = self.generator(input_x)
         fake_img = fake_res * mask + masked_img * (1. - mask)
+        mask_pred = self.disc(fake_img)[1]
 
         output = dict()
         eval_results = {}
@@ -286,7 +287,8 @@ class MaskFreeInpaintor(OneStageInpaintor):
             img_list = [kwargs['gt_img']] if 'gt_img' in kwargs else []
             img_list.extend(
                 [masked_img,
-                 mask.expand_as(masked_img), fake_res, fake_img])
+                 mask.expand_as(masked_img), fake_res, fake_img,
+                 mask_pred.expand_as(masked_img)])
             img = torch.cat(img_list, dim=3).cpu()
             self.save_visualization(img, osp.join(save_path, filename))
             output['save_img_path'] = osp.abspath(
