@@ -111,7 +111,7 @@ optimizers = dict(generator=dict(type='Adam',
 
 lr_config = dict(policy='Fixed', by_epoch=False)
 
-checkpoint_config = dict(by_epoch=False, interval=50000)
+checkpoint_config = dict(by_epoch=False, interval=25000)
 log_config = dict(
     interval=100,
     hooks=[
@@ -123,13 +123,13 @@ log_config = dict(
 visual_config = dict(
     type='VisualizationHook',
     output_dir='visual',
-    interval=1000,
+    interval=500,
     res_name_list=['gt_img', 'masked_img', 'fake_res', 'fake_img'],
 )
 
-evaluation = dict(interval=50000)
+evaluation = dict(interval=10000)
 
-total_iters = 800002
+total_iters = 400002
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 work_dir = './work_dirs/test_pggan'
