@@ -35,7 +35,7 @@ model = dict(
     pretrained=None)
 
 train_cfg = dict(disc_step=0)
-test_cfg = dict(metrics=['l1'])
+test_cfg = dict(metrics=['l1', 'psnr', 'ssim'])
 
 dataset_type = 'ImgInpaintingDataset'
 input_shape = (256, 256)
